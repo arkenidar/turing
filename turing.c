@@ -78,7 +78,7 @@ int scan_bit(){
 void print_bit(int bit){printf(">> %d\n",bit);}
 int main(int argc, char* argv[]){
 	struct program p=parse_p(argc,argv); // deallocate as necessary
-	printf("The program was parsed\n");
+	printf("The program was parsed.\n");
 	if(p.lc<1){printf("No lines in program. Program is not executed.\n"); return 4;}
 	int m[22+0]={0}; // minimium memory size of 22 bits (22 words 1 bit wide)
 	int c=0,x,i,dst,src;m[1]=1;int px=0,pdst=0;
