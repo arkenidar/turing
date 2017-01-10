@@ -87,10 +87,23 @@ void execute_p(struct program p){
 	int c=0,x,i,dst,src;m[1]=1;int px=0,pdst=0;
 	while(1){
 		i=c<<2;dst=p.pa[i|0];src=p.pa[i|1];
-		x=src!=3?((src==0||src==1)?src:m[src]):scan_bit(); // PHASE 1: INPUT
-		if(dst==3)print_bit(x);else if(dst!=0&&dst!=1)m[dst]=x; // PHASE 2: OUTPUT
-		c=p.pa[i|2|m[2]]; // PHASE 3: JUMP
+
+		// PHASE 1: INPUT
+		x=src!=3?
+			( (src==0||src==1)?src:m[src] )
+			: scan_bit();
+
+		// PHASE 2: OUTPUT
+		if(dst==3)
+			print_bit(x);
+		else if(dst!=0&&dst!=1)
+			m[dst]=x;
+
+		// PHASE 3: JUMP
+		c=p.pa[i|2|m[2]];
+
 		if(src==4)break;//stop
+
 		if(dst==4){//program can be modified
 			for(int i=0;i<8;i++)set_bit(&px,m[5+0+i],i);
 			for(int i=0;i<8;i++)set_bit(&pdst,m[5+8+i],i);
