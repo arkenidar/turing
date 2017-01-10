@@ -76,10 +76,13 @@ int scan_bit(){
 	}
 }
 void print_bit(int bit){printf(">> %d\n",bit);}
-int main(int argc, char* argv[]){
+struct program init(int argc, char* argv[]){
 	struct program p=parse_p(argc,argv); // deallocate as necessary
 	printf("The program was parsed.\n");
-	if(p.lc<1){printf("No lines in program. Program is not executed.\n"); return 4;}
+	if(p.lc<1){printf("No lines in program. Program is not executed.\n"); exit(4);}
+	return p;
+}
+void execute_p(struct program p){
 	int m[22+0]={0}; // minimium memory size of 22 bits (22 words 1 bit wide)
 	int c=0,x,i,dst,src;m[1]=1;int px=0,pdst=0;
 	while(1){
@@ -93,5 +96,14 @@ int main(int argc, char* argv[]){
 			for(int i=0;i<8;i++)set_bit(&pdst,m[5+8+i],i);
 			p.pa[pdst]=px;}
 	}
+}
+void free_p(struct program* p){
+	free(p->pa); p->pa=NULL;
+	p->lc=0;
+}
+int main(int argc, char* argv[]){
+	struct program p = init(argc, argv);
+	execute_p(p);
+	free_p(&p);
 	return 0;
 }
