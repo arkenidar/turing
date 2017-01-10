@@ -83,31 +83,26 @@ struct program init(int argc, char* argv[]){
 	return p;
 }
 void execute_p(struct program p){
-	int m[22+0]={0}; // minimium memory size of 22 bits (22 words 1 bit wide)
+	int m[5+0]={0}; // minimium memory size of 5 bits (5 words 1 bit wide)
 	int c=0,x,i,dst,src;m[1]=1;int px=0,pdst=0;
 	while(1){
-		i=c<<2;dst=p.pa[i|0];src=p.pa[i|1];
+		i=c*4; dst=p.pa[i+0]; src=p.pa[i+1];
 
 		// PHASE 1: INPUT
-		x=src!=3?
-			( (src==0||src==1)?src:m[src] )
+		x = (src!=3)?
+			m[src]
 			: scan_bit();
 
 		// PHASE 2: OUTPUT
 		if(dst==3)
 			print_bit(x);
-		else if(dst!=0&&dst!=1)
+		else
 			m[dst]=x;
 
 		// PHASE 3: JUMP
-		c=p.pa[i|2|m[2]];
+		c=p.pa[i+2+m[2]];
 
 		if(src==4)break;//stop
-
-		if(dst==4){//program can be modified
-			for(int i=0;i<8;i++)set_bit(&px,m[5+0+i],i);
-			for(int i=0;i<8;i++)set_bit(&pdst,m[5+8+i],i);
-			p.pa[pdst]=px;}
 	}
 }
 void free_p(struct program* p){
